@@ -56,13 +56,22 @@ Code: MIT ([LICENSE](LICENSE)).
 
 ## Show the deadlines on another website
 
-Paste this into a Custom HTML block (for example on a STEMEd+ Commons WordPress page):
+**List of deadlines (no iframe, no script).** In WordPress (for example a STEMEd+ Commons page), add an **RSS** block
+and give it this feed:
 
-```html
-<iframe src="https://jlib271.github.io/stemed-deadlines/embed.html" title="STEMEd+ Deadlines"
-        style="width:100%;height:700px;border:0" loading="lazy"></iframe>
-```
+    https://jlib271.github.io/stemed-deadlines/feeds/upcoming.xml
 
-Options, added to the end of the `src` address: `?days=30` (how far ahead to show; default 60), `?source=funding`
-(one site: `funding`, `conferences`, `professional-learning`, `faculty-development`), `?limit=10` (at most 10
-deadlines), `?subscribe=0` (hide the subscribe box). Combine them with `&`, e.g. `embed.html?days=90&limit=15`.
+It lists the next 60 days, soonest first, each title starting with its date ("Nov. 30: Applications due: ...").
+Turn on "Display excerpt" to show which site each deadline comes from, and set "Items" to how many to show.
+One site only: `feeds/upcoming-funding.xml`, `upcoming-conferences.xml`, `upcoming-professional-learning.xml`,
+`upcoming-faculty-development.xml`. WordPress refreshes feeds every few hours.
+
+**Subscribe buttons.** Plain links work anywhere:
+
+- Google Calendar: `https://calendar.google.com/calendar/r?cid=http%3A%2F%2Fjlib271.github.io%2Fstemed-deadlines%2Ffeeds%2Fall.ics`
+- Apple Calendar or Outlook: `webcal://jlib271.github.io/stemed-deadlines/feeds/all.ics`
+- Any calendar ("add from URL"): `https://jlib271.github.io/stemed-deadlines/feeds/all.ics`
+
+**Iframe (optional).** `embed.html` is a compact view with subscribe buttons for sites that allow iframes:
+`<iframe src="https://jlib271.github.io/stemed-deadlines/embed.html" title="STEMEd+ Deadlines" style="width:100%;height:700px;border:0"></iframe>`.
+Options: `?days=30`, `?source=funding`, `?limit=10`, `?subscribe=0`, combined with `&`.

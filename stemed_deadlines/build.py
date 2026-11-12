@@ -8,6 +8,7 @@ Output (all static, served by GitHub Pages):
     deadlines.json          everything listed (also what the next run falls back on if a site is down)
     feeds/all.ics           one calendar with every deadline
     feeds/<source>.ics      one calendar per site, as a convenience
+    feeds/upcoming.xml      RSS of the next 60 days, soonest first, for a WordPress RSS block
 """
 import argparse
 import datetime as dt
@@ -16,8 +17,10 @@ import json
 import shutil
 import sys
 from pathlib import Path
+from email.utils import format_datetime
 from typing import Callable, Dict, List, Optional
 from urllib.request import Request, urlopen
+from xml.etree import ElementTree as ET
 
 from . import ics
 
@@ -47,6 +50,42 @@ def load_previous(previous: Optional[str], get: Callable[[str], str] = fetch) ->
     except Exception as exc:  # noqa: BLE001 - any failure means "start fresh"
         print(f"Note: no previous deadlines loaded from {previous} ({exc}).")
         return []
+
+
+UPCOMING_DAYS = 60
+MONTHS = ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."]
+
+
+def short_date(iso: str) -> str:
+    d = dt.date.fromisoformat(iso)
+    return f"{MONTHS[d.month - 1]} {d.day}"
+
+
+def write_upcoming_rss(path: Path, deadlines: List[dict], cfg: dict, today: dt.date, now: dt.datetime,
+                       source: Optional[dict] = None) -> None:
+    """The next 60 days, soonest first, each title starting with its date ("Nov. 30: ...").
+    Items carry no pubDate on purpose: feed readers such as WordPress's RSS block then keep
+    this order instead of sorting by date."""
+    last = (today + dt.timedelta(days=UPCOMING_DAYS)).isoformat()
+    rss = ET.Element("rss", version="2.0")
+    ch = ET.SubElement(rss, "channel")
+    name = cfg["title"] + (f": {source['label']}" if source else "")
+    ET.SubElement(ch, "title").text = name
+    ET.SubElement(ch, "link").text = cfg["site_url"]
+    ET.SubElement(ch, "description").text = (f"Deadlines in the next {UPCOMING_DAYS} days, soonest first. "
+                                             "Always confirm on the sponsor's page.")
+    ET.SubElement(ch, "lastBuildDate").text = format_datetime(now)
+    for d in deadlines:
+        if d["date"] > last or (source and d["source"] != source["id"]):
+            continue
+        e = ET.SubElement(ch, "item")
+        ET.SubElement(e, "title").text = f"{short_date(d['date'])}: {d['summary']}"
+        ET.SubElement(e, "link").text = d.get("url") or d["source_url"]
+        ET.SubElement(e, "guid", isPermaLink="false").text = d["uid"]
+        ET.SubElement(e, "description").text = f"{d['source_label']}. Full listing: {d['source_name']}, {d['source_url']}"
+        ET.SubElement(e, "category").text = d["source_label"]
+    ET.indent(rss)
+    path.write_bytes(b'<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(rss, encoding="utf-8") + b"\n")
 
 
 def run(out: Path, previous: Optional[str], today: dt.date, get: Callable[[str], str] = fetch,
@@ -106,6 +145,9 @@ def run(out: Path, previous: Optional[str], today: dt.date, get: Callable[[str],
         (feeds / f"{s['id']}.ics").write_bytes(ics.calendar(
             f"{cfg['title']}: {s['label']}", f"Deadlines from {s['name']}. Always confirm on the sponsor's page.",
             [d for d in unique if d["source"] == s["id"]], stamp))
+    write_upcoming_rss(feeds / "upcoming.xml", unique, cfg, today, now)
+    for s in cfg["sources"]:
+        write_upcoming_rss(feeds / f"upcoming-{s['id']}.xml", unique, cfg, today, now, s)
     failed = [x for x in status if not x["ok"]]
     print(f"Wrote {len(unique)} upcoming deadline(s) from {len(cfg['sources'])} site(s); {len(failed)} site(s) unreachable.")
     return payload

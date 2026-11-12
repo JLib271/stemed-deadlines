@@ -73,6 +73,19 @@ class BuildTests(unittest.TestCase):
             only_funding = ics.parse((out / "feeds" / "funding.ics").read_bytes().decode("utf-8"))
             self.assertEqual([e["uid"] for e in only_funding], ["f1@stemed-funding"])
 
+    def test_upcoming_rss_is_soonest_first_with_dates_in_titles(self):
+        import xml.etree.ElementTree as ET
+        with tempfile.TemporaryDirectory() as tmp:
+            build.run(Path(tmp), None, TODAY, get=fake_get)
+            root = ET.parse(Path(tmp) / "feeds" / "upcoming.xml").getroot()
+            titles = [i.findtext("title") for i in root.findall("./channel/item")]
+            self.assertEqual(titles[0], "Nov. 20: Proposals due: NARST 2027")
+            self.assertEqual(len(titles), 3)                      # the January deadline is beyond 60 days
+            self.assertIsNone(root.find("./channel/item/pubDate"))
+            one = ET.parse(Path(tmp) / "feeds" / "upcoming-funding.xml").getroot()
+            self.assertEqual([i.findtext("title") for i in one.findall("./channel/item")],
+                             ["Dec. 1: Deadline: Example Grant (NSF)"])
+
     def test_a_site_that_is_down_keeps_its_earlier_deadlines(self):
         with tempfile.TemporaryDirectory() as tmp:
             first = build.run(Path(tmp) / "a", None, TODAY, get=fake_get)
