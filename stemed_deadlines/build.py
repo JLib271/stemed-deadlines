@@ -4,6 +4,7 @@
 
 Output (all static, served by GitHub Pages):
     index.html              every upcoming deadline, "next 60 days" first
+    embed.html              a compact view with subscribe buttons, for embedding in another website
     deadlines.json          everything listed (also what the next run falls back on if a site is down)
     feeds/all.ics           one calendar with every deadline
     feeds/<source>.ics      one calendar per site, as a convenience
@@ -92,6 +93,7 @@ def run(out: Path, previous: Optional[str], today: dt.date, get: Callable[[str],
     (out / "deadlines.json").write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n",
                                         encoding="utf-8")
     shutil.copyfile(ROOT / "site" / "index.html", out / "index.html")
+    shutil.copyfile(ROOT / "site" / "embed.html", out / "embed.html")
     for name in ASSETS:
         shutil.copyfile(ROOT / "site" / name, out / name)
     stamp = now.strftime("%Y%m%dT%H%M%SZ")

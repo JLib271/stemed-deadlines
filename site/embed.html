@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STEMEd+ Deadlines</title>
+<base target="_blank">
+<style>
+  @font-face { font-family: Manrope; src: url(manrope.woff) format("woff"); font-weight: 200 800; font-display: swap; }
+  :root { --g: #014704; --rust: #993319; --ink: #1d2433; --muted: #5b6475; --line: #dde2ea; --soft: #e9f2e9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 4px; font: 15px/1.45 Manrope, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: transparent; }
+  a { color: var(--g); }
+  .sub { background: var(--soft); border: 1px solid #c6dcc7; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
+  .sub p { margin: 0 0 8px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--g); color: #fff; font-weight: 700; text-decoration: none; font-size: .9rem; border: 0; cursor: pointer; font-family: inherit; }
+  .btn.alt { background: #fff; color: var(--g); border: 1.5px solid var(--g); }
+  .url { display: block; margin-top: 8px; font-size: .8rem; color: var(--muted); word-break: break-all; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 0 0 6px; }
+  select { font: inherit; font-size: .9rem; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); }
+  .count { color: var(--muted); font-size: .88rem; margin: 0; }
+  h3 { font-size: .95rem; margin: 14px 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .rel { font-size: .78rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: #fdf3dc; color: #7a4f00; }
+  .rel.soon { background: #fdecea; color: #a3261b; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; margin-bottom: 6px; background: #fff; }
+  .src { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; margin-bottom: 3px; }
+  .src.funding { background: #f3ece6; color: #7a3a1c; }
+  .src.conferences { background: #e6f0f7; color: #1f5f8b; }
+  .src.professional-learning { background: #eef3e2; color: #4a5d12; }
+  .src.faculty-development { background: #ece9f5; color: #4b3a7a; }
+  .t { display: block; font-weight: 700; text-decoration: none; }
+  .t:hover { text-decoration: underline; }
+  .more { margin: 12px 0 4px; font-size: .9rem; }
+  .empty { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="sub" id="subbox">
+  <p><strong>Add every STEMEd+ deadline to your calendar.</strong> It updates daily.</p>
+  <div class="btns">
+    <a class="btn" id="gcal" href="#">Google Calendar</a>
+    <a class="btn alt" id="webcal" href="#">Apple or Outlook</a>
+    <button class="btn alt" type="button" id="copy">Copy calendar link</button>
+  </div>
+  <span class="url" id="url"></span>
+</div>
+<div class="bar">
+  <p class="count" id="count"></p>
+  <label><span class="count">Show </span><select id="source"><option value="">Everything</option></select></label>
+</div>
+<div id="list"></div>
+<p class="more"><a id="full" href="./">See all deadlines, search, and calendars for each site</a></p>
+<script>
+(function () {
+  'use strict';
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var params = new URLSearchParams(location.search);
+  var WITHIN = +(params.get('days') || 60), LIMIT = +(params.get('limit') || 0);
+  var data = null;
+  function el(id) { return document.getElementById(id); }
+  function node(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+  function dateOf(iso) { var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); }
+  function label(iso) { var d = dateOf(iso); return DAYS[d.getUTCDay()] + ', ' + MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate(); }
+  function daysUntil(iso) { return Math.round((dateOf(iso) - dateOf(data.today)) / 864e5); }
+
+  var ics = new URL('feeds/all.ics', location.href).href;
+  el('url').textContent = ics;
+  el('gcal').href = 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(ics.replace(/^https:/, 'http:'));
+  el('webcal').href = ics.replace(/^https?:/, 'webcal:');
+  el('copy').addEventListener('click', function () {
+    if (navigator.clipboard) navigator.clipboard.writeText(ics).then(function () { el('copy').textContent = 'Copied'; }, function () { el('url').style.fontWeight = '700'; });
+  });
+  if (params.get('subscribe') === '0') el('subbox').hidden = true;
+
+  function render() {
+    var src = el('source').value;
+    var items = data.deadlines.filter(function (x) { return (!src || x.source === src) && daysUntil(x.date) <= WITHIN; });
+    if (LIMIT) items = items.slice(0, LIMIT);
+    el('count').textContent = items.length + (items.length === 1 ? ' deadline' : ' deadlines') + ' in the next ' + WITHIN + ' days';
+    var box = el('list'); box.innerHTML = '';
+    if (!items.length) { box.appendChild(node('p', 'empty', 'Nothing due in the next ' + WITHIN + ' days.')); return; }
+    var cur = null, ul = null;
+    items.forEach(function (x) {
+      if (x.date !== cur) {
+        cur = x.date; var n = daysUntil(x.date), h = node('h3', '', label(x.date));
+        h.appendChild(node('span', 'rel' + (n <= 14 ? ' soon' : ''), n <= 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days'));
+        box.appendChild(h); ul = node('ul'); box.appendChild(ul);
+      }
+      var li = node('li');
+      li.appendChild(node('span', 'src ' + x.source, x.source_label));
+      var a = node('a', 't', x.summary); a.href = x.url || x.source_url; li.appendChild(a);
+      ul.appendChild(li);
+    });
+  }
+
+  fetch('deadlines.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+    data = d;
+    d.sources.forEach(function (s) { var o = node('option', '', s.label); o.value = s.id; el('source').appendChild(o); });
+    if (params.get('source')) el('source').value = params.get('source');
+    el('source').addEventListener('input', render);
+    el('full').href = d.site.site_url;
+    render();
+  }).catch(function () { el('list').appendChild(node('p', 'empty', 'Deadlines could not be loaded. See them at jlib271.github.io/stemed-deadlines.')); });
+})();
+</script>
+</body>
+</html>

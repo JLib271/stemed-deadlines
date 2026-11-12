@@ -61,7 +61,7 @@ class BuildTests(unittest.TestCase):
                              ["c1@stemed-conferences", "p1@stemed-professional-learning", "f1@stemed-funding",
                               "d1@stemed-faculty-development"])
             self.assertTrue(all(s["ok"] for s in payload["status"]))
-            for name in ("index.html", "deadlines.json", "feeds/all.ics", "feeds/funding.ics",
+            for name in ("index.html", "embed.html", "deadlines.json", "feeds/all.ics", "feeds/funding.ics",
                          "feeds/faculty-development.ics", "stemedplus-theme.css"):
                 self.assertTrue((out / name).exists(), name)
             text = (out / "feeds" / "all.ics").read_bytes().decode("utf-8")

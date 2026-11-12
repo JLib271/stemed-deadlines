@@ -26,6 +26,7 @@ It keeps deadlines from today on, puts the site's name in front of each event (f
 | `index.html` | the page: deadlines grouped by day, "next 60 days" by default, with search and a site filter |
 | `feeds/all.ics` | one calendar with every deadline |
 | `feeds/<site>.ics` | one calendar per site (`funding`, `conferences`, `professional-learning`, `faculty-development`) |
+| `embed.html` | a compact view with subscribe buttons, for embedding in another website (see below) |
 | `deadlines.json` | everything listed |
 
 If a site cannot be reached, its deadlines from the last published `deadlines.json` are kept, and the page says
@@ -52,3 +53,16 @@ STEMEd+ Deadlines is part of [STEMEd+ Commons](https://stemedplus.hcommons.org/)
 ## License
 
 Code: MIT ([LICENSE](LICENSE)).
+
+## Show the deadlines on another website
+
+Paste this into a Custom HTML block (for example on a STEMEd+ Commons WordPress page):
+
+```html
+<iframe src="https://jlib271.github.io/stemed-deadlines/embed.html" title="STEMEd+ Deadlines"
+        style="width:100%;height:700px;border:0" loading="lazy"></iframe>
+```
+
+Options, added to the end of the `src` address: `?days=30` (how far ahead to show; default 60), `?source=funding`
+(one site: `funding`, `conferences`, `professional-learning`, `faculty-development`), `?limit=10` (at most 10
+deadlines), `?subscribe=0` (hide the subscribe box). Combine them with `&`, e.g. `embed.html?days=90&limit=15`.
