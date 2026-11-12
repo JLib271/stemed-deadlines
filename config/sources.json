@@ -1,0 +1,14 @@
+{
+  "_about": "The STEMEd+ sites whose deadline calendars are combined here. Each build downloads every calendar (ics); if one cannot be reached, its deadlines from the last published deadlines.json are kept so nothing disappears for a day.",
+  "title": "STEMEd+ Deadlines",
+  "tagline": "Every deadline from across STEMEd+ Commons in one place: funding calls, conference proposals and registration, professional learning for K-12 teachers and informal educators, and faculty development for college instructors, graduate students, and postdocs. Subscribe once to get them all in your calendar.",
+  "repo_url": "https://github.com/JLib271/stemed-deadlines",
+  "site_url": "https://jlib271.github.io/stemed-deadlines/",
+  "commons_home": "https://stemedplus.hcommons.org/",
+  "sources": [
+    {"id": "funding", "name": "STEMEd+ Funding", "label": "Funding", "url": "https://jlib271.github.io/stemed-funding/", "ics": "https://jlib271.github.io/stemed-funding/feeds/deadlines.ics", "about": "open calls for STEM+ education research and practice"},
+    {"id": "conferences", "name": "STEMEd+ Conferences", "label": "Conferences", "url": "https://jlib271.github.io/stemed-conferences/", "ics": "https://jlib271.github.io/stemed-conferences/feeds/deadlines.ics", "about": "proposal, registration, and travel-award deadlines"},
+    {"id": "professional-learning", "name": "STEMEd+ Professional Learning", "label": "K-12 and informal educators", "url": "https://jlib271.github.io/stemed-professional-learning/", "ics": "https://jlib271.github.io/stemed-professional-learning/feeds/deadlines.ics", "about": "national programs for K-12 teachers and informal educators"},
+    {"id": "faculty-development", "name": "STEMEd+ Faculty Development", "label": "College faculty, grads, and postdocs", "url": "https://jlib271.github.io/stemed-faculty-development/", "ics": "https://jlib271.github.io/stemed-faculty-development/feeds/deadlines.ics", "about": "teaching professional development for college faculty, instructors, graduate students, and postdocs"}
+  ]
+}

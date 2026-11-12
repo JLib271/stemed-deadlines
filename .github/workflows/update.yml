@@ -1,0 +1,57 @@
+name: Combine and publish
+
+# Every day, after the other STEMEd+ sites have rebuilt: download their deadline calendars,
+# run the tests, and publish the combined page and calendar to GitHub Pages.
+# Pull requests only run the tests. Turn on once: Settings -> Pages -> Source: GitHub Actions.
+
+on:
+  schedule:
+    - cron: "41 13 * * *"
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Run tests
+        run: python -m unittest discover -s tests -t . -v
+
+  publish:
+    needs: check
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v6
+      - name: Build the site
+        run: python -m stemed_deadlines --out output --previous "${{ steps.pages.outputs.base_url }}"
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: output
+      - id: deployment
+        uses: actions/deploy-pages@v5
