@@ -15,8 +15,11 @@ Each day this site downloads the deadline calendars published by:
 |---|---|---|
 | [STEMEd+ Funding](https://jlib271.github.io/stemed-funding/) | `feeds/deadlines.ics` | open calls for STEM+ education research and practice |
 | [STEMEd+ Conferences](https://jlib271.github.io/stemed-conferences/) | `feeds/deadlines.ics` | proposal, registration, and travel-award deadlines |
-| [STEMEd+ Professional Learning](https://jlib271.github.io/stemed-professional-learning/) | `feeds/deadlines.ics` | programs for K-12 teachers and informal educators |
-| [STEMEd+ Faculty Development](https://jlib271.github.io/stemed-faculty-development/) | `feeds/deadlines.ics` | teaching professional development for college faculty, instructors, graduate students, and postdocs |
+| [STEMEd+ Professional Development](https://jlib271.github.io/stemed-professional-development/) | `feeds/deadlines.ics` | programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs |
+
+Professional Development replaced the separate Professional Learning and Faculty Development sites. Its calendars
+are also written as `professional-learning.ics` and `faculty-development.ics` (and the matching `upcoming-*.xml`)
+so existing subscriptions keep working.
 
 It keeps deadlines from today on, puts the site's name in front of each event (for example
 `[Conferences] Proposals due: NARST 2027`), and writes:

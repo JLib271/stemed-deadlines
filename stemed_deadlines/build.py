@@ -107,7 +107,7 @@ def run(out: Path, previous: Optional[str], today: dt.date, get: Callable[[str],
                     "source": s["id"]} for e in events]
             status.append({"source": s["name"], "ok": True, "count": len(got)})
         except Exception as exc:  # noqa: BLE001 - keep yesterday's deadlines for a site that is down
-            got = earlier.get(s["id"], [])
+            got = earlier.get(s["id"], []) or [dict(d, source=s["id"]) for old in s.get("old_ids", []) for d in earlier.get(old, [])]
             status.append({"source": s["name"], "ok": False, "error": str(exc)[:200], "kept": len(got)})
             print(f"WARNING: {s['name']}: {exc}; kept {len(got)} earlier deadline(s).")
         for d in got:
@@ -139,15 +139,18 @@ def run(out: Path, previous: Optional[str], today: dt.date, get: Callable[[str],
     feeds = out / "feeds"
     feeds.mkdir(parents=True, exist_ok=True)
     (feeds / "all.ics").write_bytes(ics.calendar(
-        cfg["title"], "Every deadline from STEMEd+ Funding, Conferences, Professional Learning, and Faculty Development. "
+        cfg["title"], "Every deadline from STEMEd+ Funding, Conferences, and Professional Development. "
                       "Always confirm on the sponsor's page.", unique, stamp))
     for s in cfg["sources"]:
-        (feeds / f"{s['id']}.ics").write_bytes(ics.calendar(
-            f"{cfg['title']}: {s['label']}", f"Deadlines from {s['name']}. Always confirm on the sponsor's page.",
-            [d for d in unique if d["source"] == s["id"]], stamp))
+        # A merged site's feeds are also written under its old names, so existing subscriptions keep working.
+        for name in [s["id"]] + s.get("old_ids", []):
+            (feeds / f"{name}.ics").write_bytes(ics.calendar(
+                f"{cfg['title']}: {s['label']}", f"Deadlines from {s['name']}. Always confirm on the sponsor's page.",
+                [d for d in unique if d["source"] == s["id"]], stamp))
     write_upcoming_rss(feeds / "upcoming.xml", unique, cfg, today, now)
     for s in cfg["sources"]:
-        write_upcoming_rss(feeds / f"upcoming-{s['id']}.xml", unique, cfg, today, now, s)
+        for name in [s["id"]] + s.get("old_ids", []):
+            write_upcoming_rss(feeds / f"upcoming-{name}.xml", unique, cfg, today, now, s)
     failed = [x for x in status if not x["ok"]]
     print(f"Wrote {len(unique)} upcoming deadline(s) from {len(cfg['sources'])} site(s); {len(failed)} site(s) unreachable.")
     return payload

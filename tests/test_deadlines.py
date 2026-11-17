@@ -27,10 +27,9 @@ FEEDS = {
         event("f0@stemed-funding", "20261001", "Deadline: Past Grant (NSF)")),
     "https://jlib271.github.io/stemed-conferences/feeds/deadlines.ics": cal(
         event("c1@stemed-conferences", "20261120", "Proposals due: NARST 2027")),
-    "https://jlib271.github.io/stemed-professional-learning/feeds/deadlines.ics": cal(
-        event("p1@stemed-professional-learning", "20261130", "Applications due: NOAA Teacher at Sea (2027 field season)")),
-    "https://jlib271.github.io/stemed-faculty-development/feeds/deadlines.ics": cal(
-        event("d1@stemed-faculty-development", "20270115", "Requests due: NAGT Traveling Workshops")),
+    "https://jlib271.github.io/stemed-professional-development/feeds/deadlines.ics": cal(
+        event("p1@stemed-professional-development", "20261130", "Applications due: NOAA Teacher at Sea (2027 field season)"),
+        event("d1@stemed-professional-development", "20270115", "Requests due: NAGT Traveling Workshops")),
 }
 
 
@@ -58,11 +57,12 @@ class BuildTests(unittest.TestCase):
             out = Path(tmp)
             payload = build.run(out, None, TODAY, get=fake_get)
             self.assertEqual([d["uid"] for d in payload["deadlines"]],
-                             ["c1@stemed-conferences", "p1@stemed-professional-learning", "f1@stemed-funding",
-                              "d1@stemed-faculty-development"])
+                             ["c1@stemed-conferences", "p1@stemed-professional-development", "f1@stemed-funding",
+                              "d1@stemed-professional-development"])
             self.assertTrue(all(s["ok"] for s in payload["status"]))
             for name in ("index.html", "embed.html", "deadlines.json", "feeds/all.ics", "feeds/funding.ics",
-                         "feeds/faculty-development.ics", "stemedplus-theme.css"):
+                         "feeds/professional-development.ics", "feeds/faculty-development.ics",
+                         "feeds/professional-learning.ics", "feeds/upcoming-faculty-development.xml", "stemedplus-theme.css"):
                 self.assertTrue((out / name).exists(), name)
             text = (out / "feeds" / "all.ics").read_bytes().decode("utf-8")
             self.assertTrue(all(len(line.encode()) <= 75 for line in text.split("\r\n")))
