@@ -2,12 +2,12 @@
   "_about": "The STEMEd+ sites whose deadline calendars are combined here. Each build downloads every calendar (ics); if one cannot be reached, its deadlines from the last published deadlines.json are kept so nothing disappears for a day. old_ids: calendar and RSS names a site used before it was merged; the same feeds are also written under those names so existing subscriptions keep working.",
   "title": "STEMEd+ Deadlines",
   "tagline": "Every deadline from across STEMEd+ Commons in one place: funding calls, conference proposals and registration, and professional development for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs. Subscribe once to get them all in your calendar.",
-  "repo_url": "https://github.com/JLib271/stemed-deadlines",
-  "site_url": "https://jlib271.github.io/stemed-deadlines/",
+  "repo_url": "https://github.com/stemedplus/stemed-deadlines",
+  "site_url": "https://stemedplus.github.io/stemed-deadlines/",
   "commons_home": "https://stemedplus.hcommons.org/",
   "sources": [
-    {"id": "funding", "name": "STEMEd+ Funding", "label": "Funding", "url": "https://jlib271.github.io/stemed-funding/", "ics": "https://jlib271.github.io/stemed-funding/feeds/deadlines.ics", "about": "open calls for STEM+ teaching and STEM+ education research"},
-    {"id": "conferences", "name": "STEMEd+ Conferences", "label": "Conferences", "url": "https://jlib271.github.io/stemed-conferences/", "ics": "https://jlib271.github.io/stemed-conferences/feeds/deadlines.ics", "about": "proposal, registration, and travel-award deadlines"},
-    {"id": "professional-development", "name": "STEMEd+ Professional Development", "label": "Professional development", "url": "https://jlib271.github.io/stemed-professional-development/", "ics": "https://jlib271.github.io/stemed-professional-development/feeds/deadlines.ics", "about": "national programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs", "old_ids": ["professional-learning", "faculty-development"]}
+    {"id": "funding", "name": "STEMEd+ Funding", "label": "Funding", "url": "https://stemedplus.github.io/stemed-funding/", "ics": "https://stemedplus.github.io/stemed-funding/feeds/deadlines.ics", "about": "open calls for STEM+ teaching and STEM+ education research"},
+    {"id": "conferences", "name": "STEMEd+ Conferences", "label": "Conferences", "url": "https://stemedplus.github.io/stemed-conferences/", "ics": "https://stemedplus.github.io/stemed-conferences/feeds/deadlines.ics", "about": "proposal, registration, and travel-award deadlines"},
+    {"id": "professional-development", "name": "STEMEd+ Professional Development", "label": "Professional development", "url": "https://stemedplus.github.io/stemed-professional-development/", "ics": "https://stemedplus.github.io/stemed-professional-development/feeds/deadlines.ics", "about": "national programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs", "old_ids": ["professional-learning", "faculty-development"]}
   ]
 }

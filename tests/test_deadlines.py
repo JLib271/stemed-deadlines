@@ -22,12 +22,12 @@ def event(uid: str, day: str, summary: str, url: str = "https://example.org/x", 
 
 
 FEEDS = {
-    "https://jlib271.github.io/stemed-funding/feeds/deadlines.ics": cal(
+    "https://stemedplus.github.io/stemed-funding/feeds/deadlines.ics": cal(
         event("f1@stemed-funding", "20261201", "Deadline: Example Grant (NSF)", description="A long description, with commas; and semicolons " * 3),
         event("f0@stemed-funding", "20261001", "Deadline: Past Grant (NSF)")),
-    "https://jlib271.github.io/stemed-conferences/feeds/deadlines.ics": cal(
+    "https://stemedplus.github.io/stemed-conferences/feeds/deadlines.ics": cal(
         event("c1@stemed-conferences", "20261120", "Proposals due: NARST 2027")),
-    "https://jlib271.github.io/stemed-professional-development/feeds/deadlines.ics": cal(
+    "https://stemedplus.github.io/stemed-professional-development/feeds/deadlines.ics": cal(
         event("p1@stemed-professional-development", "20261130", "Applications due: NOAA Teacher at Sea (2027 field season)"),
         event("d1@stemed-professional-development", "20270115", "Requests due: NAGT Traveling Workshops")),
 }

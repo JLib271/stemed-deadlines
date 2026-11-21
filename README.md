@@ -1,11 +1,11 @@
 # STEMEd+ Deadlines
 
 Every deadline from across STEMEd+ Commons in one place, and in one calendar:
-**https://jlib271.github.io/stemed-deadlines/**
+**https://stemedplus.github.io/stemed-deadlines/**
 
 Subscribe once in Google Calendar, Outlook, or Apple Calendar ("add calendar from URL"):
 
-    https://jlib271.github.io/stemed-deadlines/feeds/all.ics
+    https://stemedplus.github.io/stemed-deadlines/feeds/all.ics
 
 ## Where the deadlines come from
 
@@ -13,9 +13,9 @@ Each day this site downloads the deadline calendars published by:
 
 | Site | Calendar | What it holds |
 |---|---|---|
-| [STEMEd+ Funding](https://jlib271.github.io/stemed-funding/) | `feeds/deadlines.ics` | open calls for STEM+ teaching and STEM+ education research |
-| [STEMEd+ Conferences](https://jlib271.github.io/stemed-conferences/) | `feeds/deadlines.ics` | proposal, registration, and travel-award deadlines |
-| [STEMEd+ Professional Development](https://jlib271.github.io/stemed-professional-development/) | `feeds/deadlines.ics` | programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs |
+| [STEMEd+ Funding](https://stemedplus.github.io/stemed-funding/) | `feeds/deadlines.ics` | open calls for STEM+ teaching and STEM+ education research |
+| [STEMEd+ Conferences](https://stemedplus.github.io/stemed-conferences/) | `feeds/deadlines.ics` | proposal, registration, and travel-award deadlines |
+| [STEMEd+ Professional Development](https://stemedplus.github.io/stemed-professional-development/) | `feeds/deadlines.ics` | programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs |
 
 Professional Development replaced the separate Professional Learning and Faculty Development sites. Its calendars
 are also written as `professional-learning.ics` and `faculty-development.ics` (and the matching `upcoming-*.xml`)
@@ -62,7 +62,7 @@ Code: MIT ([LICENSE](LICENSE)).
 **List of deadlines (no iframe, no script).** In WordPress (for example a STEMEd+ Commons page), add an **RSS** block
 and give it this feed:
 
-    https://jlib271.github.io/stemed-deadlines/feeds/upcoming.xml
+    https://stemedplus.github.io/stemed-deadlines/feeds/upcoming.xml
 
 It lists the next 60 days, soonest first, each title starting with its date ("Nov. 30: Applications due: ...").
 Turn on "Display excerpt" to show which site each deadline comes from, and set "Items" to how many to show.
@@ -71,10 +71,10 @@ One site only: `feeds/upcoming-funding.xml`, `upcoming-conferences.xml`, `upcomi
 
 **Subscribe buttons.** Plain links work anywhere:
 
-- Google Calendar: `https://calendar.google.com/calendar/r?cid=http%3A%2F%2Fjlib271.github.io%2Fstemed-deadlines%2Ffeeds%2Fall.ics`
-- Apple Calendar or Outlook: `webcal://jlib271.github.io/stemed-deadlines/feeds/all.ics`
-- Any calendar ("add from URL"): `https://jlib271.github.io/stemed-deadlines/feeds/all.ics`
+- Google Calendar: `https://calendar.google.com/calendar/r?cid=http%3A%2F%2Fstemedplus.github.io%2Fstemed-deadlines%2Ffeeds%2Fall.ics`
+- Apple Calendar or Outlook: `webcal://stemedplus.github.io/stemed-deadlines/feeds/all.ics`
+- Any calendar ("add from URL"): `https://stemedplus.github.io/stemed-deadlines/feeds/all.ics`
 
 **Iframe (optional).** `embed.html` is a compact view with subscribe buttons for sites that allow iframes:
-`<iframe src="https://jlib271.github.io/stemed-deadlines/embed.html" title="STEMEd+ Deadlines" style="width:100%;height:700px;border:0"></iframe>`.
+`<iframe src="https://stemedplus.github.io/stemed-deadlines/embed.html" title="STEMEd+ Deadlines" style="width:100%;height:700px;border:0"></iframe>`.
 Options: `?days=30`, `?source=funding`, `?limit=10`, `?subscribe=0`, combined with `&`.

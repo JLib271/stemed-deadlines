@@ -25,7 +25,7 @@ from xml.etree import ElementTree as ET
 from . import ics
 
 ROOT = Path(__file__).resolve().parent.parent
-USER_AGENT = "STEMEd+ Deadlines (https://github.com/JLib271/stemed-deadlines)"
+USER_AGENT = "STEMEd+ Deadlines (https://github.com/stemedplus/stemed-deadlines)"
 ASSETS = ("stemedplus-commons-logo.png", "stemedplus-commons-logo-white.png", "stemedplus-theme.css", "manrope.woff")
 
 
