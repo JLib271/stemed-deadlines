@@ -13,7 +13,7 @@ Each day this site downloads the deadline calendars published by:
 
 | Site | Calendar | What it holds |
 |---|---|---|
-| [STEMEd+ Funding](https://jlib271.github.io/stemed-funding/) | `feeds/deadlines.ics` | open calls for STEM+ teaching and research |
+| [STEMEd+ Funding](https://jlib271.github.io/stemed-funding/) | `feeds/deadlines.ics` | open calls for STEM+ teaching and STEM+ education research |
 | [STEMEd+ Conferences](https://jlib271.github.io/stemed-conferences/) | `feeds/deadlines.ics` | proposal, registration, and travel-award deadlines |
 | [STEMEd+ Professional Development](https://jlib271.github.io/stemed-professional-development/) | `feeds/deadlines.ics` | programs for K-12 teachers, informal educators, college faculty and instructors, and graduate students and postdocs |
 
